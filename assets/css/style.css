@@ -1,0 +1,313 @@
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.atlas-slider {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    overflow: hidden;
+}
+
+.atlas-slider-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.atlas-slider-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    z-index: 1;
+
+}
+
+/* X Coordinate Transitions (Existing) */
+.atlas-slider-slide.slide-in {
+    transform: translateX(100%);
+    /* Sağdan gelir */
+}
+
+.atlas-slider-slide.slide-in.next-right {
+    opacity: 1;
+    transform: translateX(100%);
+    /* Sağdan gelir */
+    z-index: 3;
+}
+
+.atlas-slider-slide.slide-in.next-left {
+    opacity: 1;
+    transform: translateX(-100%);
+    /* Soldan gelir */
+    z-index: 3;
+}
+
+.atlas-slider-slide.next-right.slide-in.ready {
+    transform: translateX(0);
+    /* Yerine oturur */
+}
+
+.atlas-slider-slide.next-left.slide-in.ready {
+    transform: translateX(0);
+    /* Yerine oturur */
+}
+
+.atlas-slider-slide.slide-in.active {
+    opacity: 1;
+    transform: translateX(0);
+    /* Sabit durur */
+    z-index: 2;
+}
+
+/* Y Coordinate Transitions (Existing) */
+.atlas-slider-slide.slide-in-y {
+    transform: translateY(100%);
+    /* Sağdan gelir */
+}
+
+.atlas-slider-slide.slide-in-y.next-right {
+    opacity: 1;
+    transform: translateY(100%);
+    /* Sağdan gelir */
+    z-index: 3;
+}
+
+.atlas-slider-slide.slide-in-y.next-left {
+    opacity: 1;
+    transform: translateY(-100%);
+    /* Soldan gelir */
+    z-index: 3;
+}
+
+.atlas-slider-slide.next-right.slide-in-y.ready {
+    transform: translateY(0);
+    /* Yerine oturur */
+}
+
+.atlas-slider-slide.next-left.slide-in-y.ready {
+    transform: translateY(0);
+    /* Yerine oturur */
+}
+
+.atlas-slider-slide.slide-in-y.active {
+    opacity: 1;
+    transform: translateY(0);
+    /* Sabit durur */
+    z-index: 2;
+}
+
+/* Zoom Transition (Preserving Original Structure) */
+.atlas-slider-slide.slide-in-zoom {
+    transform: translateX(100%) scale(0.7);
+    opacity: 0;
+}
+
+.atlas-slider-slide.slide-in-zoom.next-right {
+    opacity: 1;
+    transform: translateX(100%) scale(0.7);
+    z-index: 3;
+}
+
+.atlas-slider-slide.slide-in-zoom.next-left {
+    opacity: 1;
+    transform: translateX(-100%) scale(0.7);
+    z-index: 3;
+}
+
+.atlas-slider-slide.next-right.slide-in-zoom.ready {
+    transform: translateX(0) scale(1);
+}
+
+.atlas-slider-slide.next-left.slide-in-zoom.ready {
+    transform: translateX(0) scale(1);
+}
+
+.atlas-slider-slide.slide-in-zoom.active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    z-index: 2;
+}
+
+/* Rotate Transition (Preserving Original Structure) */
+.atlas-slider-slide.slide-in-rotate {
+    transform: translateX(100%) rotate(-45deg);
+    opacity: 0;
+}
+
+.atlas-slider-slide.slide-in-rotate.next-right {
+    opacity: 1;
+    transform: translateX(100%) rotate(-45deg);
+    z-index: 3;
+}
+
+.atlas-slider-slide.slide-in-rotate.next-left {
+    opacity: 1;
+    transform: translateX(-100%) rotate(45deg);
+    z-index: 3;
+}
+
+.atlas-slider-slide.next-right.slide-in-rotate.ready {
+    transform: translateX(0) rotate(0);
+}
+
+.atlas-slider-slide.next-left.slide-in-rotate.ready {
+    transform: translateX(0) rotate(0);
+}
+
+.atlas-slider-slide.slide-in-rotate.active {
+    opacity: 1;
+    transform: translateX(0) rotate(0);
+    z-index: 2;
+}
+
+/* Flip Horizontal Transition (Preserving Original Structure) */
+.atlas-slider-slide.slide-in-flip-x {
+    transform: translateX(100%) perspective(1000px) rotateY(-90deg);
+    opacity: 0;
+}
+
+.atlas-slider-slide.slide-in-flip-x.next-right {
+    opacity: 1;
+    transform: translateX(100%) perspective(1000px) rotateY(-90deg);
+    z-index: 3;
+}
+
+.atlas-slider-slide.slide-in-flip-x.next-left {
+    opacity: 1;
+    transform: translateX(-100%) perspective(1000px) rotateY(90deg);
+    z-index: 3;
+}
+
+.atlas-slider-slide.next-right.slide-in-flip-x.ready {
+    transform: translateX(0) perspective(1000px) rotateY(0);
+}
+
+.atlas-slider-slide.next-left.slide-in-flip-x.ready {
+    transform: translateX(0) perspective(1000px) rotateY(0);
+}
+
+.atlas-slider-slide.slide-in-flip-x.active {
+    opacity: 1;
+    transform: translateX(0) perspective(1000px) rotateY(0);
+    z-index: 2;
+}
+
+/* Fade Transition (Preserving Original Structure) */
+.atlas-slider-slide.slide-in-fade {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.atlas-slider-slide.slide-in-fade.next-right {
+    opacity: 0;
+    transform: translateX(100%);
+    z-index: 3;
+}
+
+.atlas-slider-slide.slide-in-fade.next-left {
+    opacity: 0;
+    transform: translateX(-100%);
+    z-index: 3;
+}
+
+.atlas-slider-slide.next-right.slide-in-fade.ready {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.atlas-slider-slide.next-left.slide-in-fade.ready {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.atlas-slider-slide.slide-in-fade.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+
+/**/
+.atlas-slider-slide.ready {
+
+    will-change: transform;
+
+    /*opacity: 0;*/
+    transition:
+        /*opacity 0.5s ease, */
+        transform 0.5s ease;
+
+}
+
+.atlas-slider-slide:nth-child(1) {
+    background-color: #3498db;
+}
+
+.atlas-slider-slide:nth-child(2) {
+    background-color: #2ecc71;
+}
+
+.atlas-slider-slide:nth-child(3) {
+    background-color: #e74c3c;
+}
+
+.atlas-slider-slide:nth-child(4) {
+    background-color: #f39c12;
+}
+
+.atlas-slider-pagination {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    z-index: 4;
+}
+
+.atlas-slider-dot {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.atlas-slider-dot.active {
+    background-color: white;
+}
+
+.atlas-slider-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 5;
+    padding: 0 20px;
+}
+
+.atlas-slider-btn {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.atlas-slider-btn:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
