@@ -5,10 +5,25 @@ class AtlasFlow {
             throw new Error('Slider wrapper is required');
         }
 
+        // options
+        this.options = {
+            autoplay: false,
+            interval: 3000,
+            pagination: true,
+            navigation: true,
+            animationDuration: 500,
+            sliderSlideClassName: 'atlas-slider-slide',
+            sliderWrapperClassName: 'atlas-slider-wrapper',
+            paginationClassName: 'atlas-slider-pagination',
+            paginationBulletClassName: 'atlas-slider-dot',
+            nextButtonClassName: 'next-button',
+            prevButtonClassName: 'prev-button',
+            ...options
+        };
+
         // Core slider elements
         this.slider = sliderWrapper;
-        this.wrapper = this.slider.querySelector('.atlas-slider-wrapper');
-        this.slides = Array.from(this.slider.querySelectorAll('.atlas-slider-slide'));
+        this.slides = Array.from(this.slider.querySelectorAll(`.${this.options.sliderSlideClassName}`));
         
         // Validate slides
         if (this.slides.length === 0) {
@@ -22,14 +37,6 @@ class AtlasFlow {
 
         // Callback and options
         this.callback = callback;
-        this.options = {
-            autoplay: false,
-            interval: 3000,
-            pagination: true,
-            navigation: true,
-            animationDuration: 500,
-            ...options
-        };
 
         // Bind methods to ensure correct context
         this.next = this.next.bind(this);
@@ -51,7 +58,7 @@ class AtlasFlow {
     createPagination() {
         if (!this.options.pagination) return;
 
-        const paginationContainer = this.slider.querySelector('.atlas-slider-pagination');
+        const paginationContainer = this.slider.querySelector(`.${this.options.paginationClassName}`);
         if (!paginationContainer) return;
 
         // Clear existing pagination
@@ -59,7 +66,7 @@ class AtlasFlow {
 
         this.slides.forEach((_, index) => {
             const dot = document.createElement('div');
-            dot.classList.add('atlas-slider-dot');
+            dot.classList.add(this.options.paginationBulletClassName);
             
             // Mark first slide as active
             if (index === 0) dot.classList.add('active');
@@ -71,8 +78,8 @@ class AtlasFlow {
     }
 
     bindEvents() {
-        const prevBtn = this.slider.querySelector('.prev');
-        const nextBtn = this.slider.querySelector('.next');
+        const prevBtn = this.slider.querySelector(`.${this.options.prevButtonClassName}`);
+        const nextBtn = this.slider.querySelector(`.${this.options.nextButtonClassName}`);
 
         if (prevBtn) prevBtn.addEventListener('click', this.prev);
         if (nextBtn) nextBtn.addEventListener('click', this.next);
@@ -116,9 +123,21 @@ class AtlasFlow {
             : (index > this.currentIndex ? 'right' : 'left');
 
         try {
+            //
+            this.dispatcher({
+                type: 'transitionStart', 
+                activeIndex: index, 
+                direction: direction, 
+                buttonType: dir ? dir : undefined,
+                wrapper: this.slider 
+            });
+
             // Prepare next slide
-            this.slides[index].classList.add(`next-${direction}`);
+            this.slides[this.currentIndex].classList.add(`previous-direction-${direction}`);
+            this.slides[index].classList.add(`direction-${direction}`);
             await this.sleep(10);
+
+            this.slides[this.currentIndex].classList.add('previous-ready');
             this.slides[index].classList.add('ready');
             await this.sleep(10);
 
@@ -133,21 +152,22 @@ class AtlasFlow {
             await this.sleep(this.options.animationDuration);
 
             // Clean up classes
-            this.slides[this.currentIndex].classList.remove('ready', 'active');
-            this.slides[index].classList.remove(`next-${direction}`, 'ready');
+            this.slides[this.currentIndex].classList.remove('ready', 'active', `previous-direction-${direction}`, 'previous-ready');
+            this.slides[index].classList.remove(`direction-${direction}`, 'ready');
             this.slides[index].classList.add('active');
 
             // Update current index
             this.currentIndex = index;
 
             // Trigger callback if provided
-            if (typeof this.callback === 'function') {
-                this.callback({ 
-                    activeIndex: index, 
-                    direction: direction, 
-                    wrapper: this.slider 
-                });
-            }
+            this.dispatcher({
+                type: 'transitionEnd', 
+                activeIndex: index, 
+                direction: direction, 
+                buttonType: dir ? dir : undefined,
+                wrapper: this.slider 
+            });
+
         } catch (error) {
             console.error('Slide transition error:', error);
         } finally {
@@ -164,7 +184,7 @@ class AtlasFlow {
 
     updatePagination(index, isActive) {
         if (!this.options.pagination) return;
-        const dots = this.slider.querySelectorAll('.atlas-slider-dot');
+        const dots = this.slider.querySelectorAll(`.${this.options.paginationBulletClassName}`);
         if (dots[index]) {
             dots[index].classList.toggle('active', isActive);
         }
@@ -198,16 +218,23 @@ class AtlasFlow {
         this.stopAutoplay();
         
         // Remove event listeners
-        const prevBtn = this.slider.querySelector('.prev');
-        const nextBtn = this.slider.querySelector('.next');
+        const prevBtn = this.slider.querySelector(`.${this.options.prevButtonClassName}`);
+        const nextBtn = this.slider.querySelector(`.${this.options.nextButtonClassName}`);
         
         if (prevBtn) prevBtn.removeEventListener('click', this.prev);
         if (nextBtn) nextBtn.removeEventListener('click', this.next);
         
         // Remove pagination event listeners
-        const dots = this.slider.querySelectorAll('.atlas-slider-dot');
+        const dots = this.slider.querySelectorAll(`.${this.options.paginationBulletClassName}`);
         dots.forEach(dot => {
             dot.removeEventListener('click', this.safeGoToSlide);
         });
+    }
+
+    //
+    dispatcher(obj){
+        if (typeof this.callback === 'function') {
+            this.callback(obj);
+        }
     }
 }
