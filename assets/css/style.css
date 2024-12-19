@@ -107,10 +107,10 @@ body {
 
 /* previous element */
 .atlas-slider-slide.slide-in-y.active.previous-direction-left.previous-ready {
-    transform: translateY(20%);
+    transform: translateY(50%);
 }
 .atlas-slider-slide.slide-in-y.active.previous-direction-right.previous-ready {
-    transform: translateY(-20%);
+    transform: translateY(-50%);
 }
 
 /* Zoom Transition (Preserving Original Structure) */

@@ -13,7 +13,6 @@ class AtlasFlow {
             navigation: true,
             animationDuration: 500,
             sliderSlideClassName: 'atlas-slider-slide',
-            sliderWrapperClassName: 'atlas-slider-wrapper',
             paginationClassName: 'atlas-slider-pagination',
             paginationBulletClassName: 'atlas-slider-dot',
             nextButtonClassName: 'next-button',
